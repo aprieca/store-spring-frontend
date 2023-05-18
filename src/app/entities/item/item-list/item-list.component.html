@@ -1,79 +1,88 @@
-<h1>{{title}}</h1>
 
-<form>
-  <div class="row">
-    <div class="form-group col-12 col-md-6">
-      <label for="name">Nombre</label>
-      <input type="text" [(ngModel)]="nameFilter" name="name" id="name">
+
+<div class="container">
+  <h1>{{title}}</h1>
+  <form>
+
+    <div class="row d-flex flex-column">
+      <h2> Filtros:</h2>
+      <div class="form-group col-12 col-md-4 mb-3" >
+        <div>
+          <label for="name">Nombre</label>
+        </div>
+        <div>
+          <input type="text" [(ngModel)]="nameFilter" name="name" id="name">
+        </div>
+      </div>
+
+      <div class="form-group col-12 col-md-4 mb-4">
+        <div>
+          <label for="price">Precio Máximo</label>
+        </div>
+        <div>
+          <input type="text" [(ngModel)]="priceFilter" name="price" id="price">
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4">
+        <button id="btnSearch" class="btn btn-secondary" (click)="searchByFilters()">Buscar</button>
+      </div>
     </div>
+  </form>
 
-    <div class="form-group col-12 col-md-3">
-      <label for="name">Precio Máximo</label>
-      <input type="text" [(ngModel)]="priceFilter" name="price" id="price">
-    </div>
+  <div class="mt-4">
+    <button class="btn btn-success" [routerLink]="['/items','new']">Nuevo Artículo</button>
+  </div>
 
-    <div class="col-12 col-md-3">
-      <button id="btnSearch" class="btn btn-secondary" (click)="searchByFilters()">Buscar</button>
+  <table *ngIf="items.length > 0" class="table table-striped table-hover table-bordered mb-3 mt-3">
+    <thead class="bg-dark text-white">
+    <th scope="col">Id</th>
+    <th scope="col">Imagen</th>
+    <th scope="col">Artículo</th>
+    <th scope="col">Precio</th>
+    <th scope="col">Opciones</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{item.id}}</td>
+      <td><img class="imageItem" [src]="'data:image/jpeg;base64,' + item.image"></td>
+      <td>{{item.name}}</td>
+      <td>{{item.price}}</td>
+      <td>
+        <button class="btn btn-primary me-2" id="btnEditCategory" [routerLink]="['/items',item.id]">Editar</button>
+        <button class="btn btn-primary me-2" id="btnEditCategoryReactive" [routerLink]="['/items/reactive',item.id]">Editar Form Reactivo</button>
+        <button class="btn btn-danger me-2" id="btnDeleteCategory" data-bs-toggle="modal" data-bs-target="#askConfirmationDelete"
+                (click)="prepareItemToDelete(item.id!)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="paginationElements">
+    <button [disabled]="first" class="btn btn-secondary btnAtras" (click)="previousPage()">Anterior</button>
+    <span>Pagina {{(page + 1)}} de {{totalPages}} - Elementos totales: {{totalElements}}</span>
+    <button [disabled]="last" class="btn btn-secondary btnSiguiente" (click)="nextPage()">Siguiente</button>
+  </div>
+
+  <div class="modal fade" id="askConfirmationDelete" tabindex="-1" aria-labelledby="askConfirmationDelete"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmación de borrado</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Desea eliminar el registro, esta operación no puede deshacerse?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteItem()">Eliminar</button>
+        </div>
+      </div>
     </div>
   </div>
-</form>
-
-<div id="buttonCreateContainer">
-  <button [routerLink]="['/items','new']">Nuevo Artículo</button>
 </div>
 
-<table *ngIf="items.length > 0">
-  <thead>
-  <th>Id</th>
-  <th>Imagen</th>
-  <th>Artículo</th>
-  <th>Precio</th>
-  <th>Opciones</th>
-  </thead>
-  <tbody>
-  <tr *ngFor="let item of items">
-    <td>{{item.id}}</td>
-    <td><img class="imageItem" [src]="'data:image/jpeg;base64,' + item.image"></td>
-    <td>{{item.name}}</td>
-    <td>{{item.price}}</td>
-    <td>
-      <button id="btnEditCategory" [routerLink]="['/items',item.id]">Editar</button>
-    </td>
-    <td>
-      <button id="btnEditCategoryReactive" [routerLink]="['/items/reactive',item.id]">Editar Form Reactivo</button>
-    </td>
-    <td>
-      <button id="btnDeleteCategory" data-bs-toggle="modal" data-bs-target="#askConfirmationDelete"
-              (click)="prepareItemToDelete(item.id!)">Eliminar
-      </button>
-    </td>
-  </tr>
-  </tbody>
-</table>
-
-<div class="botoneraPaginacion">
-  <button [disabled]="first" class="btn btn-secondary btnAtras" (click)="previousPage()">Anterior</button>
-  <span>Pagina {{(page + 1)}} de {{totalPages}} - Elementos totales: {{totalElements}}</span>
-  <button [disabled]="last" class="btn btn-secondary btnSiguiente" (click)="nextPage()">Siguiente</button>
-</div>
-
-<div class="modal fade" id="askConfirmationDelete" tabindex="-1" aria-labelledby="askConfirmationDelete"
-     aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmación de borrado</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ¿Desea eliminar el registro, esta operación no puede deshacerse?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteItem()">Eliminar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 

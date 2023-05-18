@@ -1,3 +1,26 @@
 .imageItem{
   width: 80px;
 }
+
+table {
+  th{
+    text-align: center;
+  }
+  td{
+    text-align: center;
+  }
+}
+
+.paginationElements{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span{
+    margin: 0 20px 0 20px;
+  }
+}
+
+h2{
+  font-size: 20px;
+}
