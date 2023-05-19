@@ -2,23 +2,42 @@
 <div class="container form form-outline mt-5">
   <div class="row justify-content-lg-center">
     <div class="col-12 col-lg-6">
-      <h1>Ficha de Categoría</h1>
       <form *ngIf="category" #categoryForm="ngForm" name="categoryForm" role="form" novalidate autocomplete="off">
+
+        <h1>Ficha de Categoría</h1>
 
         <div class="form-group">
           <label for="id">ID</label>
-          <input type="number" [(ngModel)]="category.id" class="form-control mb-3" name="id" id="id" #id="ngModel" disabled>
+          <input type="number" [(ngModel)]="category.id" class="form-control mb-3" name="id" id="id" #id="ngModel" disabled >
         </div>
 
         <div class="form-group">
           <label for="name">Nombre</label>
-          <input type="text" [(ngModel)]="category.name" class="form-control mb-3" name="name" id="name" #name="ngModel">
+          <input type="text" [(ngModel)]="category.name" class="form-control mb-3" name="name" id="name" #name="ngModel" required
+                 minlength="3" maxlength="100">
+        </div>
+
+        <div *ngIf="(name.dirty&&name.errors)">
+          <small class="form-text text-danger" *ngIf="name.errors['required']">
+            Este campo es requerido</small>
+
+          <small class="form-text text-danger" *ngIf="name.errors['minlength']">
+            Este campo tiene que tener más de 3 caracteres</small>
         </div>
 
         <div class="form-group">
           <label for="name">Descripción</label>
           <input type="text" [(ngModel)]="category.description" class="form-control mb-3"
-                 name="description" id="description" #description="ngModel">
+                 name="description" id="description" #description="ngModel" minlength=10 maxlength="2000">
+        </div>
+
+        <div *ngIf="(description.dirty&&description.errors)">
+          <small class="form-text text-danger" *ngIf="description.errors['maxlength']">
+            La descripción no debe superar los 2000 caracteres</small>
+        </div>
+        <div *ngIf="(description.dirty&&description.errors)">
+          <small class="form-text text-danger" *ngIf="description.errors['minlength']">
+            La descripción es opcional pero si la añades debe tener mas de 10 caracteres</small>
         </div>
 
         <div class="form-group">
