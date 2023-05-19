@@ -1,78 +1,80 @@
-<h1>Ficha de artículo</h1>
 
-{{mode}} // {{item}}
+<div class="container form form-outline mt-3">
+  <div class="row justify-content-lg-center">
+    <div class="col-12 col-lg-6">
+      <form *ngIf="item" #itemForm="ngForm" name="itemForm" role="form" novalidate autocomplete="off">
 
-<div class="container">
-  <div class="row">
+        <h1>Ficha de artículo: {{item.id}}</h1>
 
-    <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input type="number" [(ngModel)]="item.id" class="form-control" name="id" id="id" #id="ngModel" disabled>
+        </div>
 
-    </div>
+        <div class="form-group">
+          <label for="categoryId">Categoría</label>
+          <p-autoComplete [(ngModel)]="selectedCategory" name="selectedCategory" [suggestions]="categories"
+                          (completeMethod)="getAllCategories($event)" (onSelect)="categorySelected()"
+                          (onClear)="categoryUnselected()" field="name" [required]="true"
+                          [forceSelection]="true"  id="categoryId" class="form-control"></p-autoComplete>
+        </div>
 
-    <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" [(ngModel)]="item.name" class="form-control" name="name" id="name" #name="ngModel" required
+                 minlength="3" maxlength="100">
+        </div>
 
+        <div *ngIf="(name.dirty&&name.errors)">
+          <small class="form-text text-danger" *ngIf="name.errors['required']">
+            Este campo es requerido</small>
+
+          <small class="form-text text-danger" *ngIf="name.errors['minlength']">
+            Este campo tiene que tener más de 3 caracteres</small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <input type="text" [(ngModel)]="item.description" name="description" class="form-control" id="description" #description="ngModel" minlength=10 maxlength="2000">
+        </div>
+
+        <div *ngIf="(description.dirty&&description.errors)">
+          <small class="form-text text-danger" *ngIf="description.errors['maxlength']">
+            La descripción no debe superar los 2000 caracteres</small>
+        </div>
+        <div *ngIf="(description.dirty&&description.errors)">
+          <small class="form-text text-danger" *ngIf="description.errors['minlength']">ng
+            La descripción es opcional pero si la añades debe tener mas de 10 caracteres</small>
+        </div>
+
+
+        <div class="form-group">
+          <label for="price">Precio</label>
+          <input type="number" [(ngModel)]="item.price" class="form-control" name="price" id="price" #price="ngModel" required
+                 min="1">
+        </div>
+
+        <div *ngIf="(price.dirty&&price.errors)">
+          <small class="form-text text-danger" *ngIf="price.errors['required']">
+            Este campo es requerido</small>
+
+          <small class="form-text text-danger" *ngIf="price.errors['min']">
+            El valor debe ser positivo y no puede ser 0</small>
+        </div>
+
+        <div class="form-group">
+          <label for="image">Imagen</label>
+          <input type="file" class="form-control" id="image" (change)="includeImageInItem($event)">
+          <img *ngIf="item.image" [src]="'data:image/webp;base64,' + item.image">
+        </div>
+
+        <div class="buttonsForm"></div>
+        <button (click)="saveItem()" [disabled]="itemForm.invalid" class="btn btn-lg btn-primary col-12 mt-2">Guardar</button>
+      </form>
     </div>
   </div>
 </div>
-<form *ngIf="item" #itemForm="ngForm" name="itemForm" role="form" novalidate autocomplete="off">
 
-  <div class="form-group">
-    <label for="id">ID</label>
-    <input type="number" [(ngModel)]="item.id" class="form-control" name="id" id="id" #id="ngModel" disabled>
-  </div>
-
-  <div class="form-group">
-    <label for="categoryId">Categoría</label>
-    <p-autoComplete [(ngModel)]="selectedCategory" name="selectedCategory" [suggestions]="categories"
-                    (completeMethod)="getAllCategories($event)" (onSelect)="categorySelected()"
-                    (onClear)="categoryUnselected()" field="name" [required]="true"
-                    [forceSelection]="true" id="categoryId"></p-autoComplete>
-  </div>
-
-
-  <div class="form-group">
-    <label for="name">Nombre</label>
-    <input type="text" [(ngModel)]="item.name" class="form-control" name="name" id="name" #name="ngModel" required
-           minlength="3" maxlength="100">
-  </div>
-
-  <div *ngIf="(name.dirty&&name.errors)">
-    <small class="form-text text-danger" *ngIf="name.errors['required']">
-      Este campo es requerido</small>
-
-    <small class="form-text text-danger" *ngIf="name.errors['minlength']">
-      Este campo tiene que tener más de 3 caracteres</small>
-  </div>
-
-  <div class="form-group">
-    <label for="description">Description</label>
-    <input type="text" [(ngModel)]="item.description" class="form-control" name="description" id="description"
-           #description="ngModel" maxlength="2000">
-  </div>
-
-  <div class="form-group">
-    <label for="price">Precio</label>
-    <input type="text" [(ngModel)]="item.price" class="form-control" name="price" id="price" #price="ngModel" required
-           minlength="1S">
-  </div>
-
-  <div *ngIf="(price.dirty&&price.errors)">
-    <small class="form-text text-danger" *ngIf="price.errors['required']">
-      Este campo es requerido</small>
-
-    <small class="form-text text-danger" *ngIf="price.errors['min']">
-      El valor debe ser positivo</small>
-  </div>
-
-  <div class="form-group">
-    <label for="image">Imagen</label>
-    <input type="file" class="form-control" id="image" (change)="includeImageInItem($event)">
-    <img *ngIf="item.image" [src]="'data:image/webp;base64,' + item.image">
-  </div>
-
-  <div class="buttonsForm"></div>
-  <button (click)="saveItem()" [disabled]="itemForm.invalid">Guardar</button>
-</form>
 
 
 

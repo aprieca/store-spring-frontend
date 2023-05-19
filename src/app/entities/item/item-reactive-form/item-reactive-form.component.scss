@@ -1,0 +1,30 @@
+form{
+  margin:25px;
+
+  .form-group{
+    margin-top: 25px;
+  }
+
+  label{
+    display: block;
+  }
+
+  .ng-valid[required], .ng-valid.required, .ng-valid{
+    border-left: 5px solid #42A94B;
+  }
+
+  .ng-invalid{
+    border-left: 5px solid #a94442;
+  }
+
+  ::ng-deep .p-inputtext  {
+    padding:0;
+    border:0;
+  }
+
+  h1{
+    text-align:center;
+  }
+
+}
+

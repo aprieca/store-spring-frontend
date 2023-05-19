@@ -11,6 +11,8 @@ import {CategoryService} from "../service/category.service";
 export class CategoryListComponent implements OnInit {
 
   categories: Category[] = [];
+
+  categoryToDelete?: number;
   constructor(private categoryService: CategoryService) {
   }
 
@@ -32,5 +34,21 @@ export class CategoryListComponent implements OnInit {
     console.log(error)
   }
 
+  public prepareCategoryToDelete(categoryId: number): void {
+    this.categoryToDelete = categoryId;
+  }
+
+  public deleteCategory(): void {
+    if (this.categoryToDelete) {
+      this.categoryService.deleteCategory(this.categoryToDelete).subscribe({
+        next: (data) => {
+          this.getCategories();
+        },
+        error: (err) => {
+          this.handleError(err)
+        }
+      });
+    }
+  }
 
 }

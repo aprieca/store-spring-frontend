@@ -1,24 +1,43 @@
+<div class="container">
 <h1>Lista de categorías</h1>
 
-<table *ngIf="categories.length > 0">
-  <thead>
-  <th>Id</th>
-  <th>Imagen</th>
-  <th>Categoría</th>
-  <th>Opciones</th>
+<table *ngIf="categories.length > 0" class="table table-striped table-hover table-bordered mb-3 mt-3">
+  <thead class="bg-dark text-white">
+  <th scope="col">Id</th>
+  <th scope="col">Imagen</th>
+  <th scope="col">Categoría</th>
+  <th scope="col">Opciones</th>
   </thead>
   <tbody>
   <tr *ngFor="let category of categories">
     <td>{{category.id}}</td>
     <td><img class="imageCategory" [src]="'data:image/jpeg;base64,' + category.image"></td>
     <td>{{category.name}}</td>
-    <a [routerLink]="['/categories',category.id,'items']" >
-      <td><button id="btnNavToCategoryItems">Artículos</button></td>
-    </a>
-    <td><button id="btnEditCategory">Editar</button></td>
-    <td><button id="btnDeleteCategory">Artículos</button></td>
+    <td><button id="btnNavToCategoryItems" class="btn btn-primary me-2" [routerLink]="['/categories',category.id,'items']">Artículos</button>
+    <button id="btnEditCategory" class="btn btn-primary me-2" [routerLink]="['/categories',category.id]">Editar Categoría</button>
+    <button id="btnDeleteCategory" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#askConfirmationDelete"
+                (click)="prepareCategoryToDelete(category.id!)">Borrar Categoria</button></td>
   </tr>
   </tbody>
 </table>
 
-
+<div class="modal fade" id="askConfirmationDelete" tabindex="-1" aria-labelledby="askConfirmationDelete"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmación de borrado</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Desea eliminar la categoría, esta operación no puede deshacerse y afectará a los articulos que pertenecen
+        a la categoría?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="deleteCategory()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

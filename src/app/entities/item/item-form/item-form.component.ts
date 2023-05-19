@@ -32,8 +32,6 @@ export class ItemFormComponent implements OnInit {
     } else {
       this.mode = "NEW";
       this.initializeItem();
-      /*this.getAllCategories();*/
-
     }
   }
 

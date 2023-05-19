@@ -1,1 +1,37 @@
-<p>category-form works!</p>
+
+<div class="container form form-outline mt-5">
+  <div class="row justify-content-lg-center">
+    <div class="col-12 col-lg-6">
+      <h1>Ficha de Categoría</h1>
+      <form *ngIf="category" #categoryForm="ngForm" name="categoryForm" role="form" novalidate autocomplete="off">
+
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input type="number" [(ngModel)]="category.id" class="form-control mb-3" name="id" id="id" #id="ngModel" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input type="text" [(ngModel)]="category.name" class="form-control mb-3" name="name" id="name" #name="ngModel">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Descripción</label>
+          <input type="text" [(ngModel)]="category.description" class="form-control mb-3"
+                 name="description" id="description" #description="ngModel">
+        </div>
+
+        <div class="form-group">
+          <label for="image">Imagen</label>
+          <input type="file" class="form-control mb-3" id="image" (change)="includeImageInCategory($event)">
+          <img *ngIf="category.image" [src]="'data:image/webp;base64,' + category.image">
+        </div>
+
+        <div class="buttonsForm"></div>
+        <button (click)="updateCategory()" [disabled]="categoryForm.invalid" class="btn btn-lg btn-primary col-12 mt-2">Guardar</button>
+
+      </form>
+
+    </div>
+  </div>
+</div>
